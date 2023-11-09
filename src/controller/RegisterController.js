@@ -3,12 +3,12 @@
 const db = require('../db');
 
 exports.RegisterAccount = (req, res) => {
-    const { username, password} = req.body;
+    const { email, password} = req.body;
 
     // Validate input parameters here if needed
 
     // Check if username already exists
-    db.query('SELECT * FROM accounts WHERE username = ?', [username], (err, rows) => {
+    db.query('SELECT * FROM accounts WHERE email = ?', [email], (err, rows) => {
       if (err) {
         // More detailed error handling could be implemented here
         console.error('Error checking username availability:', err);
@@ -18,16 +18,16 @@ exports.RegisterAccount = (req, res) => {
 
       // Check if username is already taken
       if (rows.length > 0) {
-        const userExists = rows.some(u => u.username === username);
+        const userExists = rows.some(u => u.email === email);
         if (userExists) {
-          res.status(409).json({ message: 'Username already in use.' });
+          res.status(409).json({ message: 'This email is already in use.' });
           return;
         }
       }
 
 
         // Save the new user with the password
-        db.query('INSERT INTO accounts (username, password) VALUES (?, ?)', [username,password], (err, result) => {
+        db.query('INSERT INTO accounts (email, password) VALUES (?, ?)', [email,password], (err, result) => {
           if (err) {
             // Handle specific errors like duplicate entry here
             console.error('Error registering the user:', err);

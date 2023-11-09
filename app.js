@@ -2,14 +2,21 @@ const express = require('express');
 const LogInRoutes = require('./src/routes/LogIn');
 const app = express();
 const RegisterRoutes = require('./src/routes/Register');
-
+const cors = require('cors');
 
 // Use built-in middleware for json
 app.use(express.json());
 
 
- 
+ // CORS configuration
+// Replace 'https://your-frontend.vercel.app' with your actual frontend application URL
+const corsOptions = {
+  origin: ['http://localhost:3000'],
+  optionsSuccessStatus: 200
+};
 
+// Enable CORS with the above options
+app.use(cors(corsOptions));
 
 // Configure routes without passing the db object
 app.use('/api',LogInRoutes);

@@ -1,10 +1,10 @@
 const db = require('../db');
 
 exports.LogInAccount = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
   // Check the user's username and password in the database
-  db.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], async (err, rows) => {
+  db.query('SELECT * FROM accounts WHERE email = ? AND password = ?', [email, password], async (err, rows) => {
     if (err) {
       console.error('Error checking user credentials:', err);
       return res.status(500).json({ message: 'Error checking credentials.' });
