@@ -3,10 +3,15 @@ const LogInRoutes = require('./src/routes/LogIn');
 const app = express();
 const RegisterRoutes = require('./src/routes/Register');
 const cors = require('cors');
+const swaggerSpec = require('./src/swagger'); // Import your Swagger specification
+const swaggerUi = require('swagger-ui-express'); // Import swagger-ui-express
 
 // Use built-in middleware for json
 app.use(express.json());
 
+
+// Serve Swagger documentation using Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
  // CORS configuration
 // Replace 'https://your-frontend.vercel.app' with your actual frontend application URL
