@@ -4,7 +4,7 @@ const mysql = require('mysql');
 const db = mysql.createConnection({
     host:"db4free.net",
     user: "nghiango0810",
-    password:"nghiangokquek2002",
+    password:"admin1234",
     database:"store_1",
 }
 );

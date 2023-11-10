@@ -3,7 +3,7 @@
 const db = require('../db');
 
 exports.RegisterAccount = (req, res) => {
-    const { email, password} = req.body;
+    const { firstname, lastname, email, password} = req.body;
 
     // Validate input parameters here if needed
 
@@ -27,7 +27,7 @@ exports.RegisterAccount = (req, res) => {
 
 
         // Save the new user with the password
-        db.query('INSERT INTO accounts (email, password) VALUES (?, ?)', [email,password], (err, result) => {
+        db.query('INSERT INTO accounts (firstname, lastname, email, password) VALUES (?, ?, ?, ?)', [firstname, lastname,email,password], (err, result) => {
           if (err) {
             // Handle specific errors like duplicate entry here
             console.error('Error registering the user:', err);
