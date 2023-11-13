@@ -5,6 +5,9 @@ const RegisterRoutes = require('./src/routes/Register');
 const cors = require('cors');
 const swaggerSpec = require('./src/swagger'); // Import your Swagger specification
 const swaggerUi = require('swagger-ui-express'); // Import swagger-ui-express
+const productsRoutes = require('./src/routes/products')
+
+
 
 // Use built-in middleware for json
 app.use(express.json());
@@ -26,6 +29,7 @@ app.use(cors(corsOptions));
 // Configure routes without passing the db object
 app.use('/api',LogInRoutes);
 app.use('/api',RegisterRoutes);
+app.use('/api',productsRoutes);
 
 
 // Error handling middleware (example)
