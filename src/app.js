@@ -1,13 +1,13 @@
 const express = require('express');
-const LogInRoutes = require('./src/routes/LogIn');
+const LogInRoutes = require('./routes/LogIn');
 const app = express();
-const RegisterRoutes = require('./src/routes/Register');
+const RegisterRoutes = require('./routes/Register');
 const cors = require('cors');
-const swaggerSpec = require('./src/swagger'); // Import your Swagger specification
+const swaggerSpec = require('./swagger'); // Import your Swagger specification
 const swaggerUi = require('swagger-ui-express'); // Import swagger-ui-express
-const productsRoutes = require('./src/routes/products')
-
-
+const productsRoutes = require('./routes/products');
+const { verifyToken } = require('./middleware/authMiddleware');
+require('dotenv').config();
 
 // Use built-in middleware for json
 app.use(express.json());
@@ -26,10 +26,16 @@ const corsOptions = {
 // Enable CORS with the above options
 app.use(cors(corsOptions));
 
+
+const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+
 // Configure routes without passing the db object
 app.use('/api',LogInRoutes);
 app.use('/api',RegisterRoutes);
 app.use('/api',productsRoutes);
+app.use('/api', verifyToken); // Protect profile routes
+
 
 
 // Error handling middleware (example)
