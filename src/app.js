@@ -5,7 +5,7 @@ const RegisterRoutes = require('./routes/Register');
 const cors = require('cors');
 const swaggerSpec = require('./swagger'); // Import your Swagger specification
 const swaggerUi = require('swagger-ui-express'); // Import swagger-ui-express
-const productsRoutes = require('./routes/products');
+const profileRoutes = require('./routes/profile');
 const { verifyToken } = require('./middleware/authMiddleware');
 require('dotenv').config();
 
@@ -33,8 +33,7 @@ app.use(bodyParser.json());
 // Configure routes without passing the db object
 app.use('/api',LogInRoutes);
 app.use('/api',RegisterRoutes);
-app.use('/api',productsRoutes);
-app.use('/api', verifyToken); // Protect profile routes
+app.use('/api/profile', verifyToken, profileRoutes); // Protect profile routes
 
 
 
