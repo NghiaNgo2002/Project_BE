@@ -2,7 +2,6 @@
 const express = require('express');
 const router = express.Router();
 const profileController = require('../controller/profileController');
-const { verifyToken } = require('../middleware/authMiddleware');
 
 
 /**
@@ -222,6 +221,6 @@ const { verifyToken } = require('../middleware/authMiddleware');
 
 
 // Get profile by username (you can add verifyToken if needed)
-router.get('/:email', profileController.getProfileByEmail);
+router.get('/:id', profileController.getProfileByID);
 
 module.exports = router;

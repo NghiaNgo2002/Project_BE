@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10; // You can adjust the number of salt rounds as needed
 
 exports.RegisterAccount = (req, res) => {
-    const { firstname,lastname,email,password } = req.body;
+    const { firstname,lastname,phone,address,email,password } = req.body;
 
     // Validate input parameters here if needed
 
@@ -36,7 +36,7 @@ exports.RegisterAccount = (req, res) => {
         }
 
         // Save the new user with the hashed password
-        db.query('INSERT INTO accounts (firstname,lastname,email, password) VALUES (?, ?, ?,?)', [firstname,lastname,email,hash], (err, result) => {
+        db.query('INSERT INTO accounts (firstname,lastname,phone, address,email, password) VALUES (?, ?, ?,?,?,?)', [firstname,lastname,phone,address,email,hash], (err, result) => {
           if (err) {
             // Handle specific errors like duplicate entry here
             console.error('Error registering the user:', err);

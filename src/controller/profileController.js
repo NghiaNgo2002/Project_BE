@@ -1,12 +1,11 @@
 // controllers/profileController.js
 
 const db = require('../db');
-const bcrypt = require('bcrypt');
 
-exports.getProfileByEmail = (req, res) => {
-    const email = req.params.email; // Get the username from request parameters
+exports.getProfileByID = (req, res) => {
+    const id = req.params.id; // Get the username from request parameters
   
-    db.query('SELECT firstname,lastname, email, role FROM users WHERE email = ?', [email], (err, result) => {
+    db.query('SELECT firstname,lastname,phone,address,email FROM accounts WHERE id = ?', [id], (err, result) => {
       if (err) {
         console.error('Error retrieving profile information:', err);
         return res.status(500).json({ message: 'Error retrieving profile information.' });
