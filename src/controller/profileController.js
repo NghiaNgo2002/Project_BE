@@ -18,3 +18,20 @@ exports.getProfileByID = (req, res) => {
       }
     });
   };
+
+  exports.editProfile = (req, res) => {
+    const id = req.params.id;
+    const { firstname, lastname,phone,address, email} = req.body;
+    // Execute the SQL query to update the user's profile
+    db.query('UPDATE accounts SET firstname = ?, lastname = ?, phone = ?,address = ?, email = ? WHERE id = ?', [firstname,lastname,phone,address, email, id], (err, result) => {
+      if (err) {
+        console.error('Error updating profile:', err);
+        return res.status(500).json({ message: 'Error updating profile 1.' });
+      }
+      if (result.affectedRows > 0) {
+        return res.status(200).json({ message: 'User profile updated successfully.' });
+      } else {
+        return res.status(404).json({ message: 'User not found or no changes applied.' });
+      }
+    });
+  };

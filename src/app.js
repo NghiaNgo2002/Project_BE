@@ -8,6 +8,7 @@ const swaggerUi = require('swagger-ui-express'); // Import swagger-ui-express
 const profileRoutes = require('./routes/profile');
 const { verifyToken } = require('./middleware/authMiddleware');
 const passwordRoutes = require('./routes/Password');
+const EditProfileRoutes = require('./routes/profile')
 require('dotenv').config();
 
 // Use built-in middleware for json
@@ -35,7 +36,8 @@ app.use(bodyParser.json());
 app.use('/api',LogInRoutes);
 app.use('/api',RegisterRoutes);
 app.use('/api/profile', verifyToken, profileRoutes); // Protect profile routes
-app.use('/api/profile',verifyToken,passwordRoutes);
+app.use('/api',verifyToken,passwordRoutes);
+app.use('/api/profile',verifyToken,EditProfileRoutes)
 
 
 
