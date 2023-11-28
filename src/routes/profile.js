@@ -6,8 +6,10 @@ const EditProfileController =  require('../controller/profileController');
 
 
 
+
 // Get profile by username (you can add verifyToken if needed)
 router.get('/:id', profileController.getProfileByID);
 router.post('/:id', EditProfileController.editProfile);
+
 
 module.exports = router;

@@ -9,6 +9,8 @@ const profileRoutes = require('./routes/profile');
 const { verifyToken } = require('./middleware/authMiddleware');
 const passwordRoutes = require('./routes/Password');
 const EditProfileRoutes = require('./routes/profile')
+const ListAllprofileRoutes = require('./routes/profile-admin')
+
 require('dotenv').config();
 
 // Use built-in middleware for json
@@ -38,6 +40,8 @@ app.use('/api',RegisterRoutes);
 app.use('/api/profile', verifyToken, profileRoutes); // Protect profile routes
 app.use('/api',verifyToken,passwordRoutes);
 app.use('/api/profile',verifyToken,EditProfileRoutes)
+app.use('/api/profile-admin', verifyToken, ListAllprofileRoutes);
+
 
 
 
