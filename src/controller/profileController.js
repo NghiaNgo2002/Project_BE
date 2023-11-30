@@ -39,7 +39,7 @@ exports.getProfileByID = (req, res) => {
 
 // New function to list all users
 exports.ListAllProfile = (req, res) => {
-  db.query('SELECT firstname, lastname, phone,address,email FROM accounts', (err, results) => {
+  db.query('SELECT id,firstname, lastname, phone,address,email FROM accounts', (err, results) => {
     if (err) {
       console.error('Error retrieving user list:', err);
       return res.status(500).json({ message: 'Error retrieving user list.' });
@@ -55,7 +55,7 @@ exports.ListAllProfile = (req, res) => {
 exports.ViewProfileByID = (req, res) => {
   const id = req.params.id; // Get the username from request parameters
 
-  db.query('SELECT firstname, lastname, phone, email,address FROM accounts WHERE id = ?', [id], (err, result) => {
+  db.query('SELECT id, firstname, lastname, phone, email,address FROM accounts WHERE id = ?', [id], (err, result) => {
     if (err) {
       console.error('Error retrieving profile information:', err);
       return res.status(500).json({ message: 'Error retrieving profile information.' });
@@ -71,8 +71,8 @@ exports.ViewProfileByID = (req, res) => {
 
 exports.AddNewUser = (req, res) => {
   // Extract the user details from the request body
-  const { firstname, lastname, phone,address,email,password } = req.body;
-
+  const { id ,firstname, lastname, phone,address,email,password } = req.body;
+  console.log(req.body);
   // Hash the password before saving it to the database
   bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
     if (err) {
@@ -81,8 +81,8 @@ exports.AddNewUser = (req, res) => {
     } 
 
   // Construct the SQL query to insert a new user
-  const query = 'INSERT INTO accounts (firstname,lastname, phone,address,email,password) VALUES (?, ?, ?, ?,?,?)';
-  const values = [firstname, lastname,phone,address, email, hashedPassword];
+  const query = 'INSERT INTO accounts (id ,firstname,lastname, phone,address,email,password) VALUES (?,?, ?, ?, ?,?,?)';
+  const values = [id,firstname, lastname,phone,address, email, hashedPassword];
 
   // Execute the query
   db.query(query, values, (err, result) => {
