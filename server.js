@@ -1,8 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-const cartRoutes = require("./src/routes/cart");
-const productRoutes = require("./src/routes/product");
-
+const cartRoute = require("../webverionone/src/routes/cart");
+const productRoute = require("../webverionone/src/routes/product");
+const productDetailRoute = require("../webverionone/src/routes/productdetail");
 const app = express();
 
 const port = process.env.PORT || 3001;
@@ -13,9 +13,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/api", cartRoutes);
-app.use("/api", productRoutes);
-
+app.use("/api", cartRoute);
+app.use("/api", productRoute);
+app.use("/api", productDetailRoute);
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
