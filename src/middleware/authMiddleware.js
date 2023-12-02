@@ -1,31 +1,29 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-
+// Bỏ xác thực token nếu endpoint không yêu cầu
 const verifyToken = (req, res, next) => {
-  // Get the token from the Authorization header
   const authHeader = req.headers.authorization;
-  console.log('Authorization Header:', authHeader);
+  console.log("Authorization Header:", authHeader);
 
-  if (authHeader) {
-    const token = authHeader.split(' ')[1]; // Authorization: 'Bearer TOKEN'
-
-    // Verify the token using the JWT secret from your .env file
-    jwt.verify(token, process.env.JWT_SECRET, (err, accounts) => {
-      if (err) {
-        console.error('Error during token verification:', err);
-        if (err.name === 'TokenExpiredError') {
-          return res.status(401).json({ message: 'Token expired' });
-        } else {
-          return res.status(403).json({ message: 'Forbidden: Invalid token' });
-        }
-      }
-      req.accounts = accounts;
-      next();
-    });
-  } else {
-    // If no token is provided, send a forbidden status
-    res.sendStatus(401);
+  // Kiểm tra nếu không có token
+  if (!authHeader) {
+    return next();
   }
+
+  const token = authHeader.split(" ")[1]; // Authorization: 'Bearer TOKEN'
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, accounts) => {
+    if (err) {
+      console.error("Error during token verification:", err);
+      if (err.name === "TokenExpiredError") {
+        return res.status(401).json({ message: "Token expired" });
+      } else {
+        return res.status(403).json({ message: "Forbidden: Invalid token" });
+      }
+    }
+    req.accounts = accounts;
+    next();
+  });
 };
 
 module.exports = { verifyToken };
