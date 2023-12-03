@@ -12,6 +12,7 @@ const EditProfileRoutes = require("./routes/profile");
 const ListAllprofileRoutes = require("./routes/profile-admin");
 const productRoutes = require("./routes/product");
 const productdetailRoutes = require("./routes/productdetail");
+const cartRoutes = require("./routes/cart");
 
 require("dotenv").config();
 
@@ -43,8 +44,8 @@ app.use("/api", verifyToken, passwordRoutes);
 app.use("/api/profile", verifyToken, EditProfileRoutes);
 app.use("/api/profile-admin", verifyToken, ListAllprofileRoutes);
 app.use("/api", productRoutes);
-app.use("/api", verifyToken, productdetailRoutes);
-
+app.use("/api", productdetailRoutes);
+app.use("/api", cartRoutes);
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
