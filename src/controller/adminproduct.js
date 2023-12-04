@@ -2,7 +2,7 @@ const db = require("../config/dbconnect");
 
 exports.getAll = async (req, res) => {
   try {
-    const result = await db.queryAsync("SELECT * FROM admin_product");
+    const result = await db.queryAsync("SELECT * FROM customerproductdetail");
     if (result.lenght === 0) {
       return res.status(404).json({ message: "No item found in product." });
     }
@@ -30,7 +30,7 @@ exports.getOne = async (req, res) => {
     const itemId = req.params.id;
 
     const result = await db.queryAsync(
-      "Select * from admin_product where id = ?",
+      "Select * from customerproductdetail where id = ?",
       [itemId]
     );
     if (result.lenght === 0) {
@@ -66,7 +66,7 @@ exports.addProduct = async (req, res) => {
     }
 
     const result = await db.queryAsync(
-      "INSERT INTO admin_product (name, type, price, quantity, size, color) VALUES (?, ?, ?, ?, ?, ?)",
+      "INSERT INTO customerproductdetail (name, type, price, quantity, size, color) VALUES (?, ?, ?, ?, ?, ?)",
       [name, type, price, quantity, size, color]
     );
 
@@ -91,7 +91,7 @@ exports.deleteProduct = async (req, res) => {
     const id = req.params.id;
 
     const result = await db.queryAsync(
-      "DELETE FROM admin_product WHERE id = ?",
+      "DELETE FROM customerproductdetail WHERE id = ?",
       [id]
     );
 
@@ -122,7 +122,7 @@ exports.updateProduct = async (req, res) => {
     }
 
     const result = await db.queryAsync(
-      "UPDATE admin_product SET name = ? , type = ? ,price = ?, quantity = ?, size = ? , color = ? WHERE id = ?",
+      "UPDATE customerproductdetail SET name = ? , type = ? ,price = ?, quantity = ?, size = ? , color = ? WHERE id = ?",
       [name, type, price, quantity, size, color, id]
     );
 
