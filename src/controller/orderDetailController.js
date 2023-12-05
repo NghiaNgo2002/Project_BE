@@ -18,18 +18,59 @@ exports.getOrderDetailByID = (req, res) => {
     const orderID = req.params.orderID; // Get the orderID from request parameters
   
     db.query('SELECT * FROM `orderdetail` WHERE orderID = ?', [orderID], (err, result) => {
+      console.log(result);
       if (err) {
         console.error('Error retrieving order information:', err);
         return res.status(500).json({ message: 'Error retrieving order information.' });
       }
       if (result.length > 0) {
-        const order = result[0];
+        const order = result;
         return res.status(200).json(order);
       } else {
         return res.status(404).json({ message: 'Order not found.' });
       }
     });
   };
+
+  exports.updateOrderDetailByID = (req, res) => {
+    const orderID = req.params.orderID; // Get the order ID from request parameters
+    const { productname, type, size, color,quantity} = req.body; // Include all fields you want to update
+    // Assume validation and sanitization have been done
+    const query = 'UPDATE `orderdetail` SET productname = ?, type = ?, size = ?, color = ?, quantity = ? WHERE orderID = ?';
+    const values = [productname, type, size, color,quantity, orderID];
+  
+    db.query(query, values, (err, result) => {
+      if (err) {
+        console.error('Error updating order details:', err);
+        return res.status(500).json({ message: 'Error updating order details.' });
+      }
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Order detail not found.' });
+      }
+  
+      // Return a message that the order was updated successfully
+      return res.status(200).json({ message: 'Order detail updated successfully.' });
+    });
+  };
+  
+  exports.DeleteOrderDetailByID = (req, res) => {
+    const { orderID } = req.params; // Get the order ID from request parameters
+
+    db.query('DELETE FROM `orderdetail` WHERE orderID = ?', [orderID], (err, result) => {
+      if (err) {
+        console.error('Error deleting order:', err);
+        return res.status(500).json({ message: 'Error deleting orderdetail.' });
+      }
+      if (result.affectedRows === 0) {
+        // If no rows are affected, it means the order was not found
+        return res.status(404).json({ message: 'Order not found.' });
+      }
+  
+      // If the order was successfully deleted, send back a success message
+      return res.status(200).json({ message: 'Order deleted successfully.' });
+    });
+  };
+  
   
 
 

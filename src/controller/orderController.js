@@ -23,7 +23,7 @@ exports.getOrderByID = (req, res) => {
         return res.status(500).json({ message: 'Error retrieving order information.' });
       }
       if (result.length > 0) {
-        const order = result[0];
+        const order = result;
         return res.status(200).json(order);
       } else {
         return res.status(404).json({ message: 'Order not found.' });
@@ -54,21 +54,50 @@ exports.getOrderByID = (req, res) => {
   
   exports.DeleteOrderByID = (req, res) => {
     const { orderID } = req.params; // Get the order ID from request parameters
-
-    db.query('DELETE FROM `order` WHERE orderID = ?', [orderID], (err, result) => {
+  
+    db.beginTransaction((err) => {
       if (err) {
-        console.error('Error deleting order:', err);
-        return res.status(500).json({ message: 'Error deleting order.' });
-      }
-      if (result.affectedRows === 0) {
-        // If no rows are affected, it means the order was not found
-        return res.status(404).json({ message: 'Order not found.' });
+        console.error('Error starting transaction:', err);
+        return res.status(500).json({ message: 'Error starting transaction.' });
       }
   
-      // If the order was successfully deleted, send back a success message
-      return res.status(200).json({ message: 'Order deleted successfully.' });
+      db.query('DELETE FROM `order` WHERE orderID = ?', [orderID], (err, result) => {
+        if (err) {
+          console.error('Error deleting order:', err);
+          return db.rollback(() => {
+            res.status(500).json({ message: 'Error deleting order.' });
+          });
+        }
+  
+        if (result.affectedRows === 0) {
+          return db.rollback(() => {
+            res.status(404).json({ message: 'Order not found.' });
+          });
+        }
+  
+        db.query('DELETE FROM `orderdetail` WHERE orderID = ?', [orderID], (err, result) => {
+          if (err) {
+            console.error('Error deleting orderdetail:', err);
+            return db.rollback(() => {
+              res.status(500).json({ message: 'Error deleting orderdetail.' });
+            });
+          }
+  
+          db.commit((err) => {
+            if (err) {
+              console.error('Error committing transaction:', err);
+              return db.rollback(() => {
+                res.status(500).json({ message: 'Error committing transaction.' });
+              });
+            }
+  
+            return res.status(200).json({ message: 'Order and associated details deleted successfully.' });
+          });
+        });
+      });
     });
   };
+  
   
 
 
