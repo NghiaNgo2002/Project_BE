@@ -2,7 +2,9 @@ const db = require("../config/dbconnect");
 
 exports.getAll = async (req, res) => {
   try {
-    const result = await db.queryAsync("SELECT name,price,id FROM products");
+    const result = await db.queryAsync(
+      "SELECT product_name,price,id FROM products"
+    );
 
     if (result.length === 0) {
       return res.status(404).json({ message: "No item found in product list" });
@@ -10,7 +12,7 @@ exports.getAll = async (req, res) => {
 
     const items = result.map((row) => ({
       id: row.id,
-      name: row.name,
+      product_name: row.product_name,
       price: row.price,
     }));
 

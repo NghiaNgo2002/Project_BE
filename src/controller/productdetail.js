@@ -14,10 +14,7 @@ exports.getOne = async (req, res) => {
 
     // Use explicit join syntax in the SQL query
     const result = await db
-      .queryAsync(
-        "SELECT * FROM customerproductdetail AS c JOIN products AS p ON c.product_id = p.id WHERE p.id = ?",
-        [id]
-      )
+      .queryAsync("SELECT * FROM products where id = ?", [id])
       .catch((error) => {
         console.error("Database query error:", error);
         throw error;
@@ -32,8 +29,8 @@ exports.getOne = async (req, res) => {
     // Verify that the column names in the result object match the actual column names
     const item = {
       id: result[0].id,
-      name: result[0].name, // Assuming 'name' is the correct column name
-      type: result[0].type,
+      product_name: result[0].product_name, // Assuming 'name' is the correct column name
+      product_type: result[0].product_type,
       price: result[0].price,
       color: result[0].color,
       size: result[0].size,

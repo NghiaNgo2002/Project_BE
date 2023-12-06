@@ -4,7 +4,7 @@ const db = require("../config/dbconnect");
 
 exports.getAll = async (req, res) => {
   try {
-    const result = await db.queryAsync("SELECT * FROM cartitems");
+    const result = await db.queryAsync("SELECT * FROM cart");
 
     if (result.length === 0) {
       return res.status(404).json({ message: "No items found in the cart." });
@@ -35,7 +35,7 @@ exports.getOne = async (req, res) => {
   try {
     const itemId = req.params.id;
 
-    const result = await db.queryAsync("SELECT * FROM cartitems WHERE id=?", [
+    const result = await db.queryAsync("SELECT * FROM cart WHERE id=?", [
       itemId,
     ]);
 
@@ -75,8 +75,8 @@ exports.addOne = async (req, res) => {
 
     // Insert data into the database
     const result = await db.queryAsync(
-      "INSERT INTO cartitems (product_id, name, type, price, quantity, size, color) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [req.body.product_id, name, type, price, quantity, size, color]
+      "INSERT INTO cart (name, type, price, quantity, size, color) VALUES ( ?, ?, ?, ?, ?, ?)",
+      [name, type, price, quantity, size, color]
     );
 
     // Check if the insertion was successful
@@ -108,7 +108,7 @@ exports.updateOne = async (req, res) => {
     }
 
     const result = await db.queryAsync(
-      "UPDATE cartitems SET quantity = ? WHERE id = ?",
+      "UPDATE cart SET quantity = ? WHERE id = ?",
       [quantity, id]
     );
 
