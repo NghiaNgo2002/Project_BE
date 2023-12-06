@@ -100,16 +100,16 @@ exports.addOne = async (req, res) => {
 
 exports.updateOne = async (req, res) => {
   try {
-    const { quantity } = req.body;
+    const { quantity, color, size } = req.body;
     const id = req.params.id;
 
-    if (!quantity) {
+    if (!quantity || !color || !size) {
       return res.status(204).json({ message: "Reset content of cart" });
     }
 
     const result = await db.queryAsync(
-      "UPDATE cart SET quantity = ? WHERE id = ?",
-      [quantity, id]
+      "UPDATE cart SET quantity = ? , color = ? , size = ? WHERE id = ?",
+      [quantity, color, size, id]
     );
 
     if (result.affectedRows === 1) {
@@ -129,6 +129,30 @@ exports.updateOne = async (req, res) => {
     console.log("Error updating item in the cart", error);
     return res.status(500).json({
       message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+exports.deleteOne = async (req, res) => {
+  try {
+    const itemId = req.params.id;
+
+    console.log("Deleting item with ID:", itemId);
+
+    const result = await db.queryAsync("DELETE FROM cart WHERE id=?", [itemId]);
+
+    if (result.affectedRows === 1) {
+      return res.status(200).json({ message: "Item deleted from the cart." });
+    } else {
+      return res.status(404).json({
+        message: `Item with ID ${itemId} not found in the cart.`,
+      });
+    }
+  } catch (error) {
+    console.error("Error deleting item from the cart", error);
+    return res.status(500).json({
+      message: "Internal server error.",
       error: error.message,
     });
   }
