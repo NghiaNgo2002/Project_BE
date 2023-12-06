@@ -15,7 +15,7 @@ const productdetailRoutes = require("./routes/productdetail");
 const cartRoutes = require("./routes/cart");
 const adminProductRoutes = require("./routes/adminproduct");
 const orderRoutes = require("./routes/order");
-const orderdetailRoutes = require("./routes/orderdetail")
+const orderdetailRoutes = require("./routes/orderdetail");
 
 require("dotenv").config();
 
@@ -49,10 +49,9 @@ app.use("/api/profile-admin", verifyToken, ListAllprofileRoutes);
 app.use("/api", productRoutes);
 app.use("/api", productdetailRoutes);
 app.use("/api", cartRoutes);
-app.use("/api", verifyToken, adminProductRoutes);
-app.use("/api/order",verifyToken, orderRoutes)
-app.use("/api/orderdetail",verifyToken, orderdetailRoutes)
-
+app.use("/api", adminProductRoutes);
+app.use("/api/order", verifyToken, orderRoutes);
+app.use("/api/orderdetail", verifyToken, orderdetailRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
