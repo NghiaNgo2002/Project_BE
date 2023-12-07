@@ -71,6 +71,25 @@ exports.getOrderDetailByID = (req, res) => {
     });
   };
   
+  exports.InsertNewOrderDetail = (req, res) => {
+    const { orderID, product} = req.body; // Extract order details from request body
+    console.log(req.body)
+    
+   const insertQuery = 'INSERT INTO `orderdetail` (orderID, productID, productname, type, size, price, color, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    const values = [orderID, product.id, product.product_name, product.product_type, product.size, product.price, product.color,product.quantity];
+    
+    db.query(insertQuery, values, (err, result) => {
+      if (err) {
+        console.error('Error inserting order detail:', err);
+        return res.status(500).json({ message: 'Error inserting order detail.' });
+      }
+  
+      // Successful insertion, return the newly inserted order detail ID or any other response as needed
+      const orderDetailId = result.insertId;
+      return res.status(201).json({ orderDetailId, message: 'Order detail successfully inserted.' });
+    });
+  };
+
   
 
 

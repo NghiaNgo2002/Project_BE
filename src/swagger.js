@@ -10,9 +10,8 @@ const options = {
     },
   },
   // List of files to be processed by swagger-jsdoc
-  apis: ['./src/routes/LogIn.js','./src/routes/Register.js']// Replace with the actual path to your route file
+  apis: ['./src/routes/LogIn.js','./src/routes/Register.js','./src/routes/adminproduct.js']// Replace with the actual path to your route file
 };
 
 const swaggerSpec = swaggerJSDoc(options);
-
 module.exports = swaggerSpec;

@@ -98,6 +98,24 @@ exports.getOrderByID = (req, res) => {
     });
   };
   
+  exports.InsertNewOrder = (req, res) => {
+    const { customerid, firstname, lastname, phone, address, email } = req.body;
+    const insertQuery = 'INSERT INTO `order` (customerid, firstname, lastname, phone, address, email) VALUES (?, ?, ?, ?, ?, ?)';
+    const values = [customerid, firstname, lastname, phone, address, email];
+    console.log(values)
+  
+    db.query(insertQuery, values, (err, result) => {
+      if (err) {
+        console.error('Error inserting order:', err);
+        return res.status(500).json({ message: 'Error inserting order.' });
+      }
+  
+      const orderId = result.insertId;
+  
+      return res.status(201).json({ orderId, message: 'Order successfully inserted.' });
+    });
+  };
+
   
 
 

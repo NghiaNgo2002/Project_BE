@@ -2,28 +2,28 @@ const db = require("../config/dbconnect");
 
 exports.getAll = async (req, res) => {
   const userid = req.params.user_id;
-  console.log("User ID:", userid);
   try {
     const result = await db.queryAsync(
-      "Select id, name, type,price,quantity,size,color FROM cart WHERE user_id = ?",
+      "Select product_id, name, type,price,quantity,size,color FROM cart WHERE user_id = ?",
       [userid]
     );
     if (result.length === 0) {
-      return res.status(404).json({
+      return res.status(200).json({
         message: "No item found in cart",
+        data: false,
       });
     }
     const items = result.map((row) => ({
-      id: row.id,
-      name: row.name,
-      type: row.type,
+      id: row.product_id,
+      product_name: row.name,
+      product_type: row.type,
       price: row.price,
       quantity: row.quantity,
       size: row.size,
       color: row.color,
       user_id: row.user_id,
     }));
-    return res.status(200).json({ items });
+    return res.status(200).json({ items,data:true });
   } catch (error) {
     console.error("Error retrieving product: ", error);
     return res
@@ -35,9 +35,8 @@ exports.getAll = async (req, res) => {
 // Controller to add a product to the cart for user with user_id: 38
 exports.addOne = async (req, res) => {
   try {
-    const userId = req.params.user_id; // Assuming user_id: 38
-    const { name, price, type, quantity, size, color } = req.body;
-
+    const {userID,productID, name, price, type, quantity, size, color } = req.body;
+    console.log(req.body);
     if (!name || !price || !type || !quantity || !size || !color) {
       return res.status(400).json({ message: "Missing fields" });
     }
@@ -45,7 +44,7 @@ exports.addOne = async (req, res) => {
     // Check if the user exists (optional, depending on your application logic)
     const userExists = await db.queryAsync(
       "SELECT id FROM accounts WHERE id = ?",
-      [userId]
+      [userID]
     );
 
     if (!userExists || userExists.length === 0) {
@@ -54,8 +53,8 @@ exports.addOne = async (req, res) => {
 
     // Add the product to the cart for the specified user
     const result = await db.queryAsync(
-      "INSERT INTO cart (user_id, name, price, type, quantity, size, color) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [userId, name, price, type, quantity, size, color]
+      "INSERT INTO cart (user_id, name, price, type, quantity, size, color,product_id) VALUES (?, ?, ?, ?, ?, ?, ?,?)",
+      [userID, name, price, type, quantity, size, color, productID]
     );
 
     if (result.affectedRows === 1) {
@@ -74,14 +73,13 @@ exports.addOne = async (req, res) => {
 
 exports.deleteOne = async (req, res) => {
   try {
-    const id = req.params.id;
     const userid = req.params.user_id;
     const result = await db.queryAsync(
-      "DELETE FROM cart WHERE id = ? AND user_id = ?",
-      [id, userid]
+      "DELETE FROM cart WHERE  user_id = ?",
+      [userid]
     );
     if (result.affectedRows === 0) {
-      return res.status(404).json({
+      return res.status(200).json({
         message: "Product not found in the cart",
       });
     }

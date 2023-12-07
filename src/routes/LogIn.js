@@ -3,7 +3,7 @@ const router = express.Router();
 const LogInController = require('../controller/LogInController');
 
 /**
- * @openapi
+ * @swagger
  * /api/login:
  *   post:
  *     summary: Log in with an email and password
