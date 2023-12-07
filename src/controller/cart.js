@@ -1,134 +1,72 @@
-// controller/cart.js
-
 const db = require("../config/dbconnect");
 
 exports.getAll = async (req, res) => {
+  const userid = req.params.user_id;
+  console.log("User ID:", userid);
   try {
-    const result = await db.queryAsync("SELECT * FROM cart");
-
+    const result = await db.queryAsync(
+      "Select id, name, type,price,quantity,size,color FROM cart WHERE user_id = ?",
+      [userid]
+    );
     if (result.length === 0) {
-      return res.status(404).json({ message: "No items found in the cart." });
+      return res.status(404).json({
+        message: "No item found in cart",
+      });
     }
-
     const items = result.map((row) => ({
       id: row.id,
-      product_id: row.product_id,
       name: row.name,
       type: row.type,
       price: row.price,
       quantity: row.quantity,
       size: row.size,
       color: row.color,
+      user_id: row.user_id,
     }));
-
     return res.status(200).json({ items });
   } catch (error) {
-    console.error("Error retrieving items from the cart:", error);
-    return res.status(500).json({
-      message: "Internal server error.",
-      error: error.message,
-    });
+    console.error("Error retrieving product: ", error);
+    return res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 };
 
-exports.getOne = async (req, res) => {
-  try {
-    const itemId = req.params.id;
-
-    const result = await db.queryAsync("SELECT * FROM cart WHERE id=?", [
-      itemId,
-    ]);
-
-    if (result.length === 0) {
-      return res.status(404).json({ message: "Item not found in the cart." });
-    }
-
-    const item = {
-      id: result[0].id,
-      product_id: result[0].product_id,
-      name: result[0].name,
-      type: result[0].type,
-      price: result[0].price,
-      quantity: result[0].quantity,
-      size: result[0].size,
-      color: result[0].color,
-    };
-
-    return res.status(200).json({ item });
-  } catch (error) {
-    console.error("Error retrieving item from the cart", error);
-    return res.status(500).json({
-      message: "Internal server error.",
-      error: error.message,
-    });
-  }
-};
-
+// Controller to add a product to the cart for user with user_id: 38
 exports.addOne = async (req, res) => {
   try {
-    const { name, type, price, quantity, size, color } = req.body;
+    const userId = req.params.user_id; // Assuming user_id: 38
+    const { name, price, type, quantity, size, color } = req.body;
 
-    // Check if all required fields are present
-    if (!name || !type || !price || !quantity || !size || !color) {
-      return res.status(400).json({ message: "All fields are required." });
+    if (!name || !price || !type || !quantity || !size || !color) {
+      return res.status(400).json({ message: "Missing fields" });
     }
 
-    // Insert data into the database
-    const result = await db.queryAsync(
-      "INSERT INTO cart (name, type, price, quantity, size, color) VALUES ( ?, ?, ?, ?, ?, ?)",
-      [name, type, price, quantity, size, color]
+    // Check if the user exists (optional, depending on your application logic)
+    const userExists = await db.queryAsync(
+      "SELECT id FROM accounts WHERE id = ?",
+      [userId]
     );
 
-    // Check if the insertion was successful
+    if (!userExists || userExists.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Add the product to the cart for the specified user
+    const result = await db.queryAsync(
+      "INSERT INTO cart (user_id, name, price, type, quantity, size, color) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [userId, name, price, type, quantity, size, color]
+    );
+
     if (result.affectedRows === 1) {
-      return res.status(201).json({ message: "Item added to the cart." });
+      return res.status(201).json({ message: "Product added to cart" });
     } else {
-      return res.status(500).json({
-        message: "Failed to add item to the cart.",
-      });
+      return res.status(500).json({ message: "Failed to add product to cart" });
     }
   } catch (error) {
-    console.error("Error adding item to the cart", error);
-
-    // Return a more detailed error response
+    console.error("Error adding product to cart", error);
     return res.status(500).json({
       message: "Internal server error.",
-      error: error.message,
-    });
-  }
-};
-
-exports.updateOne = async (req, res) => {
-  try {
-    const { quantity, color, size } = req.body;
-    const id = req.params.id;
-
-    if (!quantity || !color || !size) {
-      return res.status(204).json({ message: "Reset content of cart" });
-    }
-
-    const result = await db.queryAsync(
-      "UPDATE cart SET quantity = ? , color = ? , size = ? WHERE id = ?",
-      [quantity, color, size, id]
-    );
-
-    if (result.affectedRows === 1) {
-      const item = {
-        quantity: quantity,
-      };
-
-      return res
-        .status(200)
-        .json({ item, message: "Item quantity updated in the cart." });
-    } else {
-      return res.status(404).json({
-        message: "Item not found in the cart.",
-      });
-    }
-  } catch (error) {
-    console.log("Error updating item in the cart", error);
-    return res.status(500).json({
-      message: "Internal server error",
       error: error.message,
     });
   }
@@ -136,23 +74,62 @@ exports.updateOne = async (req, res) => {
 
 exports.deleteOne = async (req, res) => {
   try {
-    const itemId = req.params.id;
-
-    console.log("Deleting item with ID:", itemId);
-
-    const result = await db.queryAsync("DELETE FROM cart WHERE id=?", [itemId]);
-
-    if (result.affectedRows === 1) {
-      return res.status(200).json({ message: "Item deleted from the cart." });
-    } else {
+    const id = req.params.id;
+    const userid = req.params.user_id;
+    const result = await db.queryAsync(
+      "DELETE FROM cart WHERE id = ? AND user_id = ?",
+      [id, userid]
+    );
+    if (result.affectedRows === 0) {
       return res.status(404).json({
-        message: `Item with ID ${itemId} not found in the cart.`,
+        message: "Product not found in the cart",
       });
     }
+    res.status(200).json({
+      message: "Product deleted from the cart succesfully",
+    });
   } catch (error) {
-    console.error("Error deleting item from the cart", error);
+    console.error("Error deleting product in the cart");
     return res.status(500).json({
-      message: "Internal server error.",
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+exports.updateOne = async (req, res) => {
+  try {
+    const { quantity, size, color } = req.body;
+    const id = req.params.id;
+    const userid = req.params.user_id;
+
+    if (!quantity || !size || !color) {
+      return res.status(400).json({ message: "Bad request." });
+    }
+
+    const result = await db.queryAsync(
+      "UPDATE cart SET quantity = ? , size = ? , color = ? WHERE id = ? AND user_id = ?",
+      [quantity, size, color, id, userid]
+    );
+
+    if (result.affectedRows === 1) {
+      const updatedItem = {
+        quantity: quantity,
+        size: size,
+        color: color,
+      };
+
+      return res.status(200).json({
+        item: updatedItem,
+        message: "Product is updated in cart",
+      });
+    } else {
+      return res.status(404).json({ message: "Product not found in the cart" });
+    }
+  } catch (error) {
+    console.log("Error updating product", error);
+    return res.status(500).json({
+      message: "Internal server error",
       error: error.message,
     });
   }

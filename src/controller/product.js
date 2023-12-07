@@ -3,7 +3,7 @@ const db = require("../config/dbconnect");
 exports.getAll = async (req, res) => {
   try {
     const result = await db.queryAsync(
-      "SELECT product_name,price,id FROM products"
+      "SELECT product_name,price,id,picture_one,picture_two,picture_three FROM products"
     );
 
     if (result.length === 0) {
@@ -14,6 +14,9 @@ exports.getAll = async (req, res) => {
       id: row.id,
       product_name: row.product_name,
       price: row.price,
+      picture_one: row.picture_one,
+      picture_two: row.picture_two,
+      picture_three: row.picture_three,
     }));
 
     return res.status(200).json({ items });

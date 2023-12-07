@@ -3,7 +3,7 @@ const db = require("../config/dbconnect");
 exports.getAll = async (req, res) => {
   try {
     const result = await db.queryAsync(
-      "SELECT id, product_name, product_type, price, quantity, size, color FROM products"
+      "SELECT id, product_name, product_type, price, quantity, size, color, picture_one, picture_two, picture_three FROM products"
     );
 
     if (result.length === 0) {
@@ -18,6 +18,9 @@ exports.getAll = async (req, res) => {
       quantity: row.quantity,
       size: row.size,
       color: row.color,
+      picture_one: row.picture_one,
+      picture_two: row.picture_two,
+      picture_three: row.picture_three,
     }));
 
     return res.status(200).json({ items });
@@ -47,6 +50,9 @@ exports.getOne = async (req, res) => {
       quantity: result[0].quantity,
       size: result[0].size,
       color: result[0].color,
+      picture_one: result[0].picture_one,
+      picture_two: result[0].picture_two,
+      picture_three: result[0].picture_three,
     };
     return res.status(200).json({ item });
   } catch (error) {
@@ -60,9 +66,21 @@ exports.getOne = async (req, res) => {
 
 exports.addProduct = async (req, res) => {
   try {
-    const { product_name, product_type, price, quantity, size, color } =
-      req.body;
+    const {
+      product_name,
+      product_type,
+      price,
+      quantity,
+      size,
+      color,
+      picture_one,
+      picture_two,
+      picture_three,
+    } = req.body;
     if (
+      !picture_one ||
+      !picture_two ||
+      !picture_three ||
       !product_name ||
       !product_type ||
       !price ||
@@ -76,8 +94,18 @@ exports.addProduct = async (req, res) => {
     }
 
     const result = await db.queryAsync(
-      "INSERT INTO products (product_name, product_type, price, quantity, size, color) VALUES (?, ?, ?, ?, ?, ?)",
-      [product_name, product_type, price, quantity, size, color]
+      "INSERT INTO products (product_name, product_type, price, quantity, size, color,picture_one,picture_two,picture_three) VALUES (?, ?, ?, ?, ?, ?,?,?,?)",
+      [
+        product_name,
+        product_type,
+        price,
+        quantity,
+        size,
+        color,
+        picture_one,
+        picture_two,
+        picture_three,
+      ]
     );
 
     if (result.affectedRows === 1) {
@@ -123,11 +151,23 @@ exports.deleteProduct = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   try {
-    const { product_name, product_type, price, quantity, size, color } =
-      req.body; // Fix variable names here
+    const {
+      product_name,
+      product_type,
+      price,
+      quantity,
+      size,
+      color,
+      picture_one,
+      picture_two,
+      picture_three,
+    } = req.body; // Fix variable names here
     const id = req.params.id;
 
     if (
+      !picture_one ||
+      !picture_two ||
+      !picture_three ||
       !product_name ||
       !product_type ||
       !price ||
@@ -142,7 +182,18 @@ exports.updateProduct = async (req, res) => {
 
     const result = await db.queryAsync(
       "UPDATE products SET product_name = ?, product_type = ?, price = ?, quantity = ?, size = ?, color = ? WHERE id = ?",
-      [product_name, product_type, price, quantity, size, color, id]
+      [
+        product_name,
+        product_type,
+        price,
+        quantity,
+        size,
+        color,
+        id,
+        picture_one,
+        picture_two,
+        picture_three,
+      ]
     );
 
     if (result.affectedRows === 1) {
@@ -153,6 +204,9 @@ exports.updateProduct = async (req, res) => {
         quantity: quantity,
         size: size,
         color: color,
+        picture_one: picture_one,
+        picture_two: picture_two,
+        picture_three: picture_three,
       };
 
       return res.status(200).json({

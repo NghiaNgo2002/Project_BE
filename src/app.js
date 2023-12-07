@@ -49,7 +49,7 @@ app.use("/api/profile-admin", verifyToken, ListAllprofileRoutes);
 app.use("/api", verifyToken, productRoutes);
 app.use("/api", verifyToken, productdetailRoutes);
 app.use("/api", verifyToken, cartRoutes);
-app.use("/api", adminProductRoutes);
+app.use("/api", verifyToken, adminProductRoutes);
 app.use("/api/order", verifyToken, orderRoutes);
 app.use("/api/orderdetail", verifyToken, orderdetailRoutes);
 
