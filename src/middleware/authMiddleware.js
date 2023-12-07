@@ -1,27 +1,28 @@
+require("dotenv").config(); // Load environment variables from .env file
 const jwt = require("jsonwebtoken");
 
-// Bỏ xác thực token nếu endpoint không yêu cầu
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
-  console.log("Authorization Header:", authHeader);
 
-  // Kiểm tra nếu không có token
+  // Check if there's no token
   if (!authHeader) {
-    return next();
+    return res.status(401).json({ message: "Unauthorized: Token is missing" });
   }
 
   const token = authHeader.split(" ")[1]; // Authorization: 'Bearer TOKEN'
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, accounts) => {
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
       console.error("Error during token verification:", err);
+
       if (err.name === "TokenExpiredError") {
-        return res.status(401).json({ message: "Token expired" });
+        return res.status(401).json({ message: "Unauthorized: Token expired" });
       } else {
         return res.status(403).json({ message: "Forbidden: Invalid token" });
       }
     }
-    req.accounts = accounts;
+
+    req.user = user;
     next();
   });
 };
