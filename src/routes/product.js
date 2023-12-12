@@ -18,7 +18,6 @@ const productControllers = require("../controller/product");
  *       - Products
  */
 
-
 router.get("/product", productControllers.getAll);
-
+router.get("/productdetail/:product_name", productControllers.searchName);
 module.exports = router;

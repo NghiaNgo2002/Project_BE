@@ -27,7 +27,6 @@ const productDetailControllers = require("../controller/productdetail");
  *       - Product Detail
  */
 
-
-router.get("/productdetail/:id", productDetailControllers.getOne);
+router.get("/productdetails/:id", productDetailControllers.getOne);
 
 module.exports = router;

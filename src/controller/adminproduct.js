@@ -2,9 +2,7 @@ const db = require("../config/dbconnect");
 
 exports.getAll = async (req, res) => {
   try {
-    const result = await db.queryAsync(
-      "SELECT id, product_name, product_type, price, quantity, size, color, picture_one, picture_two, picture_three FROM products"
-    );
+    const result = await db.queryAsync("SELECT * FROM products");
 
     if (result.length === 0) {
       return res.status(404).json({ message: "No item found in product." });
@@ -18,6 +16,7 @@ exports.getAll = async (req, res) => {
       quantity: row.quantity,
       size: row.size,
       color: row.color,
+      material: row.material,
       picture_one: row.picture_one,
       picture_two: row.picture_two,
       picture_three: row.picture_three,
@@ -50,6 +49,7 @@ exports.getOne = async (req, res) => {
       quantity: result[0].quantity,
       size: result[0].size,
       color: result[0].color,
+      material: result[0].material,
       picture_one: result[0].picture_one,
       picture_two: result[0].picture_two,
       picture_three: result[0].picture_three,
@@ -73,6 +73,7 @@ exports.addProduct = async (req, res) => {
       quantity,
       size,
       color,
+      material,
       picture_one,
       picture_two,
       picture_three,
@@ -86,7 +87,8 @@ exports.addProduct = async (req, res) => {
       !price ||
       !quantity ||
       !size ||
-      !color
+      !color ||
+      !material
     ) {
       return res
         .status(400)
@@ -94,7 +96,7 @@ exports.addProduct = async (req, res) => {
     }
 
     const result = await db.queryAsync(
-      "INSERT INTO products (product_name, product_type, price, quantity, size, color,picture_one,picture_two,picture_three) VALUES (?, ?, ?, ?, ?, ?,?,?,?)",
+      "INSERT INTO products (product_name, product_type, price, quantity, size, color,material,picture_one,picture_two,picture_three) VALUES (?, ?, ?, ?, ?, ?,?,?,?,?)",
       [
         product_name,
         product_type,
@@ -102,6 +104,7 @@ exports.addProduct = async (req, res) => {
         quantity,
         size,
         color,
+        material,
         picture_one,
         picture_two,
         picture_three,
@@ -158,6 +161,7 @@ exports.updateProduct = async (req, res) => {
       quantity,
       size,
       color,
+      material,
       picture_one,
       picture_two,
       picture_three,
@@ -173,7 +177,8 @@ exports.updateProduct = async (req, res) => {
       !price ||
       !quantity ||
       !size ||
-      !color
+      !color ||
+      !material
     ) {
       return res
         .status(400)
@@ -181,7 +186,7 @@ exports.updateProduct = async (req, res) => {
     }
 
     const result = await db.queryAsync(
-      "UPDATE products SET product_name = ?, product_type = ?, price = ?, quantity = ?, size = ?, color = ? WHERE id = ?",
+      "UPDATE products SET product_name = ?, product_type = ?, price = ?, quantity = ?, size = ?, color = ? , material = ?, picture_one = ?, picture_two = ?, picture_three = ? WHERE id = ?",
       [
         product_name,
         product_type,
@@ -189,10 +194,11 @@ exports.updateProduct = async (req, res) => {
         quantity,
         size,
         color,
-        id,
+        material,
         picture_one,
         picture_two,
         picture_three,
+        id,
       ]
     );
 
@@ -204,6 +210,7 @@ exports.updateProduct = async (req, res) => {
         quantity: quantity,
         size: size,
         color: color,
+        material: material,
         picture_one: picture_one,
         picture_two: picture_two,
         picture_three: picture_three,

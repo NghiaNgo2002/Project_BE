@@ -110,7 +110,6 @@ const cartControllers = require("../controller/cart");
  *       - Cart
  */
 
-
 /**
  * @openapi
  * /api/cart:
@@ -217,10 +216,10 @@ const cartControllers = require("../controller/cart");
  *       - Cart
  */
 
-
 router.get("/cart/:user_id", cartControllers.getAll);
-router.post("/cart", cartControllers.addOne);
-router.delete("/cart/:user_id", cartControllers.deleteOne);
+router.post("/cart/:user_id", cartControllers.addOne);
+router.delete("/cart/delete/:id/:user_id", cartControllers.deleteOne);
 router.put("/cart/update/:id/:user_id", cartControllers.updateOne);
+router.get("/user/:id", cartControllers.getuser);
 
 module.exports = router;
