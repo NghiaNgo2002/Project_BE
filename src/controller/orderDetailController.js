@@ -76,7 +76,7 @@ exports.getOrderDetailByID = (req, res) => {
     console.log(req.body)
     
    const insertQuery = 'INSERT INTO `orderdetail` (orderID, productID, productname, type, size, price, color, quantity) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    const values = [orderID, product.id, product.product_name, product.product_type, product.size, product.price, product.color,product.quantity];
+    const values = [orderID, product.id, product.name, product.type, product.size, product.price, product.color,product.quantity];
     
     db.query(insertQuery, values, (err, result) => {
       if (err) {
