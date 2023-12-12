@@ -35,5 +35,6 @@ const PasswordController = require('../controller/PasswordController');
 
 
 router.post('/password',PasswordController.changePassword);
-// router.post('/:email', ForgotPasswordController.ForgotPassword)
+router.post('/getPasswordToken', PasswordController.requestPasswordReset);
+router.post('/reset-password', PasswordController.resetPassword);
 module.exports = router;
