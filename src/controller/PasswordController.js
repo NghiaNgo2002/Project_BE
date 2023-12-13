@@ -111,6 +111,7 @@ exports.requestPasswordReset = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
     const { resetToken, newPassword, confirmPassword } = req.body;
+    console.log(req.body)
     if (!resetToken || !newPassword || !confirmPassword) {
         return res.status(400).send({ message: 'resetToken, newPassword, and confirmPassword are required' });
     }
@@ -130,7 +131,7 @@ exports.resetPassword = async (req, res) => {
 
         // Update the user's password
         const hashedPassword = await bcrypt.hash(newPassword, 10); // You may need to use a password hashing library
-        const updateSql = 'UPDATE users SET password = ?, password_reset_code = NULL, password_reset_expires = NULL WHERE password_reset_code = ?';
+        const updateSql = 'UPDATE accounts SET password = ?, password_reset_code = NULL, password_reset_expires = NULL WHERE password_reset_code = ?';
         await db.query(updateSql, [hashedPassword, resetToken]);
 
         res.send({ message: 'Password reset successful' });
@@ -139,3 +140,4 @@ exports.resetPassword = async (req, res) => {
         return res.status(500).send({ message: 'Error resetting password' });
     }
 };
+

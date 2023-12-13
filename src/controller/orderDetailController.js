@@ -90,6 +90,39 @@ exports.getOrderDetailByID = (req, res) => {
     });
   };
 
+  exports.ListOrderDetailByUserID = (req, res) => {
+    const { id} = req.params; // Assuming userID is obtained from the request parameters
+    console.log(req.params)
+    // Check if userID is not provided or invalid
+    if (!id) {
+      return res.status(400).json({ message: 'Invalid or missing userID.' });
+    }
+  
+    // Fetch order details for a specific user
+    const selectQuery = `
+      SELECT od.*
+      FROM orderdetail od
+      INNER JOIN \`order\` o ON od.orderID = o.orderID
+      WHERE o.customerid = ?
+    `;
+    const values = [id];
+  
+    db.query(selectQuery, values, (err, result) => {
+      if (err) {
+        console.error('Error fetching order details:', err);
+        return res.status(500).json({ message: 'Error fetching order details.' });
+      }
+  
+      // Check if there are no order details found for the given userID
+      if (result.length === 0) {
+        return res.status(404).json({ message: 'No order details found for the user.' });
+      }
+  
+      // Return the fetched order details for the user
+      return res.status(200).json({ orderDetails: result, message: 'Order details fetched successfully.' });
+    });
+  };
+  
   
 
 

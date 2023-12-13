@@ -18,7 +18,7 @@ exports.getAll = async (req, res) => {
 
       return res.status(200).json({ items, data: true });
     } else {
-      return res.status(404).json({ message: "Cart is empty", data: false });
+      return res.status(200).json({ message: "Cart is empty", data: false });
     }
   } catch (error) {
     console.error("Error fetching cart items", error);

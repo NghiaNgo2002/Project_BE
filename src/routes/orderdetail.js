@@ -117,4 +117,6 @@ router.get('/:orderID',orderDetailController.getOrderDetailByID);
 router.put('/:orderID',orderDetailController.updateOrderDetailByID);
 router.delete('/:orderID',orderDetailController.DeleteOrderDetailByID);
 router.post('/',orderDetailController.InsertNewOrderDetail)
+router.get('/user/:id',orderDetailController.ListOrderDetailByUserID)
+
 module.exports = router;
