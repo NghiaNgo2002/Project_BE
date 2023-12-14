@@ -6,7 +6,7 @@ const profileController = require('../controller/profileController');
 const { verifyToken } = require('../middleware/authMiddleware');
 
 /**
- * @openapi
+ * @swagger
  * /api/profile:
  *   get:
  *     summary: Get all profiles

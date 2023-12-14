@@ -6,7 +6,7 @@ exports.getAll = async (req, res) => {
 
     // Retrieve items from the cart for the specified user
     const items = await db.queryAsync(
-      "SELECT id, name, type, price, quantity, size, color FROM cart WHERE user_id = ?",
+      "SELECT product_id as id, name, type, price, quantity, size, color FROM cart WHERE user_id = ?",
       [userId]
     );
 

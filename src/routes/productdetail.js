@@ -4,7 +4,7 @@ const router = express.Router();
 const productDetailControllers = require("../controller/productdetail");
 
 /**
- * @openapi
+ * @swagger
  * /api/productdetail/{id}:
  *   get:
  *     summary: Get product details by ID

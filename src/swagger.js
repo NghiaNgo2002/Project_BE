@@ -1,4 +1,5 @@
-const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerJsdoc = require('swagger-jsdoc');
+
 
 const options = {
   definition: {
@@ -6,12 +7,23 @@ const options = {
     info: {
       title: 'API of Fashion Store Website',
       version: '1.0.0',
-      description: 'API for LogIn and Register.',
+      description: 'API for Fashion Store.',
     },
   },
   // List of files to be processed by swagger-jsdoc
-  apis: ['./src/routes/LogIn.js','./src/routes/Register.js','./src/routes/adminproduct.js']// Replace with the actual path to your route file
+  apis: ['./routes/LogIn.js',
+  './routes/Register.js',
+  './routes/adminproduct.js',
+  './routes/cart.js',
+  './routes/order.js',
+  './routes/orderdetail.js',
+  './routes/Password.js',
+  './routes/product.js',
+  './routes/productdetail.js',
+  './routes/profile-admin.js',
+  './routes/profile.js']
 };
 
-const swaggerSpec = swaggerJSDoc(options);
+const swaggerSpec = swaggerJsdoc(options);
+
 module.exports = swaggerSpec;

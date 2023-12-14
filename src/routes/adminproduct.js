@@ -3,7 +3,14 @@ const router = express.Router();
 const adminProductController = require("../controller/adminproduct");
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *   name: Admin Product
+ *   description: API endpoints for managing admin products
+ */
+
+/**
+ * @swagger
  * /api/admin-product:
  *   get:
  *     summary: Get all admin products
@@ -13,31 +20,11 @@ const adminProductController = require("../controller/adminproduct");
  *         description: A list of admin products
  *       '500':
  *         description: Error getting admin products
- *     tags:
- *       - Admin Product
- *
- *   post:
- *     summary: Add a new admin product
- *     description: Add a new product to the admin panel.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             // Define properties for adding an admin product
- *     responses:
- *       '201':
- *         description: Admin product successfully added
- *       '400':
- *         description: Invalid request payload or missing required fields
- *       '500':
- *         description: Error adding an admin product
- *     tags:
- *       - Admin Product
+ *     tags: [Admin Product]
  */
 
 /**
- * @openapi
+ * @swagger
  * /api/admin-product/{id}:
  *   get:
  *     summary: Get admin product by ID
@@ -56,8 +43,7 @@ const adminProductController = require("../controller/adminproduct");
  *         description: Admin product not found
  *       '500':
  *         description: Error getting admin product by ID
- *     tags:
- *       - Admin Product
+ *     tags: [Admin Product]
  *
  *   put:
  *     summary: Update admin product by ID
@@ -69,12 +55,6 @@ const adminProductController = require("../controller/adminproduct");
  *         description: ID of the admin product to update
  *         schema:
  *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             // Define properties to update for the admin product
  *     responses:
  *       '200':
  *         description: Admin product updated successfully
@@ -84,8 +64,7 @@ const adminProductController = require("../controller/adminproduct");
  *         description: Admin product not found
  *       '500':
  *         description: Error updating admin product by ID
- *     tags:
- *       - Admin Product
+ *     tags: [Admin Product]
  *
  *   delete:
  *     summary: Delete admin product by ID
@@ -104,8 +83,7 @@ const adminProductController = require("../controller/adminproduct");
  *         description: Admin product not found
  *       '500':
  *         description: Error deleting admin product by ID
- *     tags:
- *       - Admin Product
+ *     tags: [Admin Product]
  *
  *   patch:
  *     summary: Add color to admin product
@@ -117,12 +95,6 @@ const adminProductController = require("../controller/adminproduct");
  *         description: ID of the admin product to update with a new color
  *         schema:
  *           type: string
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             // Define properties to add a new color to the admin product
  *     responses:
  *       '200':
  *         description: Color added successfully to the admin product
@@ -132,8 +104,7 @@ const adminProductController = require("../controller/adminproduct");
  *         description: Admin product not found
  *       '500':
  *         description: Error adding color to admin product
- *     tags:
- *       - Admin Product
+ *     tags: [Admin Product]
  */
 
 

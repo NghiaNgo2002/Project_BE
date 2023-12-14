@@ -4,7 +4,7 @@ const RegisterController = require('../controller/RegisterController');
 
 
 /**
- * @openapi
+ * @swagger
  * /api/register:
  *   post:
  *     summary: Register a new user account

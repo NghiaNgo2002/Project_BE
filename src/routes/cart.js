@@ -5,7 +5,7 @@ const router = express.Router();
 const cartControllers = require("../controller/cart");
 
 /**
- * @openapi
+ * @swagger
  * /api/cart:
  *   get:
  *     summary: Get all cart items
@@ -39,7 +39,7 @@ const cartControllers = require("../controller/cart");
  */
 
 /**
- * @openapi
+ * @swagger
  * /api/cart/{id}:
  *   get:
  *     summary: Get cart item by ID

@@ -3,8 +3,8 @@ const LogInRoutes = require("./routes/LogIn");
 const app = express();
 const RegisterRoutes = require("./routes/Register");
 const cors = require("cors");
-const swaggerSpec = require("./swagger"); // Import your Swagger specification
-const swaggerUi = require("swagger-ui-express"); // Import swagger-ui-express
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./swagger'); // Assuming your Swagger configuration file is named 'swagger.js'
 const profileRoutes = require("./routes/profile");
 const { verifyToken } = require("./middleware/authMiddleware");
 const passwordRoutes = require("./routes/Password");
@@ -21,9 +21,8 @@ require("dotenv").config();
 
 // Use built-in middleware for json
 app.use(express.json());
-
-// Serve Swagger documentation using Swagger UI
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// Serve Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // CORS configuration
 const corsOptions = {

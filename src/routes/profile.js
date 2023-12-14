@@ -5,7 +5,7 @@ const profileController = require('../controller/profileController');
 const EditProfileController =  require('../controller/profileController');
 
 /**
- * @openapi
+ * @swagger
  * /api/profile/{id}:
  *   get:
  *     summary: Get profile by user ID

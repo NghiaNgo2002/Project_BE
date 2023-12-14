@@ -3,7 +3,14 @@ const router = express.Router();
 const orderDetailController = require('../controller/orderDetailController');
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *   name: OrderDetails
+ *   description: API endpoints for managing order details
+ */
+
+/**
+ * @swagger
  * /api/orderdetails:
  *   get:
  *     summary: Get all order details
@@ -13,12 +20,11 @@ const orderDetailController = require('../controller/orderDetailController');
  *         description: A list of order details
  *       '500':
  *         description: Error getting order details
- *     tags:
- *       - OrderDetails
+ *     tags: [OrderDetails]
  */
 
 /**
- * @openapi
+ * @swagger
  * /api/orderdetails/{orderID}:
  *   get:
  *     summary: Get order detail by ID
@@ -37,8 +43,7 @@ const orderDetailController = require('../controller/orderDetailController');
  *         description: Order detail not found
  *       '500':
  *         description: Error getting order detail by ID
- *     tags:
- *       - OrderDetails
+ *     tags: [OrderDetails]
  *
  *   put:
  *     summary: Update order detail by ID
@@ -67,8 +72,7 @@ const orderDetailController = require('../controller/orderDetailController');
  *         description: Order detail not found
  *       '500':
  *         description: Error updating order detail by ID
- *     tags:
- *       - OrderDetails
+ *     tags: [OrderDetails]
  *
  *   delete:
  *     summary: Delete order detail by ID
@@ -87,11 +91,8 @@ const orderDetailController = require('../controller/orderDetailController');
  *         description: Order detail not found
  *       '500':
  *         description: Error deleting order detail by ID
- *     tags:
- *       - OrderDetails
+ *     tags: [OrderDetails]
  *
- * @openapi
- * /api/orderdetails:
  *   post:
  *     summary: Insert a new order detail
  *     description: Insert a new order detail.
@@ -108,8 +109,7 @@ const orderDetailController = require('../controller/orderDetailController');
  *         description: Invalid request payload or missing required fields
  *       '500':
  *         description: Error inserting new order detail
- *     tags:
- *       - OrderDetails
+ *     tags: [OrderDetails]
  */
 
 router.get('/', orderDetailController.getAllOrderDetail);

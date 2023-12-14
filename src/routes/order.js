@@ -4,7 +4,14 @@ const orderController = require('../controller/orderController');
 const { verifyToken } = require('../middleware/authMiddleware');
 
 /**
- * @openapi
+ * @swagger
+ * tags:
+ *   name: Orders
+ *   description: API endpoints for managing orders
+ */
+
+/**
+ * @swagger
  * /api/orders:
  *   get:
  *     summary: Get all orders
@@ -14,12 +21,11 @@ const { verifyToken } = require('../middleware/authMiddleware');
  *         description: A list of orders
  *       '500':
  *         description: Error getting orders
- *     tags:
- *       - Orders
+ *     tags: [Orders]
  */
 
 /**
- * @openapi
+ * @swagger
  * /api/orders/{orderID}:
  *   get:
  *     summary: Get order by ID
@@ -38,8 +44,7 @@ const { verifyToken } = require('../middleware/authMiddleware');
  *         description: Order not found
  *       '500':
  *         description: Error getting order by ID
- *     tags:
- *       - Orders
+ *     tags: [Orders]
  *
  *   put:
  *     summary: Update order by ID
@@ -66,8 +71,7 @@ const { verifyToken } = require('../middleware/authMiddleware');
  *         description: Order not found
  *       '500':
  *         description: Error updating order by ID
- *     tags:
- *       - Orders
+ *     tags: [Orders]
  *
  *   delete:
  *     summary: Delete order by ID
@@ -86,11 +90,8 @@ const { verifyToken } = require('../middleware/authMiddleware');
  *         description: Order not found
  *       '500':
  *         description: Error deleting order by ID
- *     tags:
- *       - Orders
+ *     tags: [Orders]
  *
- * @openapi
- * /api/orders:
  *   post:
  *     summary: Insert a new order
  *     description: Insert a new order.
@@ -107,8 +108,7 @@ const { verifyToken } = require('../middleware/authMiddleware');
  *         description: Invalid request payload or missing required fields
  *       '500':
  *         description: Error inserting new order
- *     tags:
- *       - Orders
+ *     tags: [Orders]
  */
 
 
