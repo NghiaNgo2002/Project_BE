@@ -32,13 +32,13 @@ exports.getAll = async (req, res) => {
 exports.addOne = async (req, res) => {
   try {
     const userId = req.params.user_id;
-    const { name, price, type, quantity, size, color } = req.body;
-
+    const { name, price, type, quantity, size, color,id } = req.body;
+    console.log(userId)
     // ... (validation and user existence checks)
 
     const result = await db.queryAsync(
-      "INSERT INTO cart (user_id, name, price, type, quantity, size, color) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [userId, name, price, type, quantity, size, color]
+      "INSERT INTO cart (user_id, name, price, type, quantity, size, color,product_id) VALUES (?, ?, ?, ?, ?, ?, ?,?)",
+      [userId, name, price, type, quantity, size, color,id]
     );
 
     if (result.affectedRows === 1) {

@@ -6,7 +6,7 @@ const saltRounds = 10; // You can adjust the number of salt rounds as needed
 
 exports.RegisterAccount = (req, res) => {
     const { firstname,lastname,phone,address,email,password } = req.body;
-
+    console.log(req.body);
     // Validate input parameters here if needed
 
     // Check if username or email already exists
